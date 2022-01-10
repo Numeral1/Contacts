@@ -10,7 +10,7 @@ public class DbConnection {
     final String URL = "jdbc:mysql://localhost:3306/db_contacts?serverTimezone=Europe/Minsk&useSSL=false";
     final String username = "root";
     final String PASSWORD = "3344";
-    private static DbConnection dbConnection/* = new DbConnection()*/;
+    private static DbConnection dbConnection;
 
     private DbConnection() {
         try {

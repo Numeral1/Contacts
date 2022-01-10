@@ -13,7 +13,7 @@
 </servlet>
 <servlet-mapping>
   <servlet-name>ContactController</servlet-name>
-  <url-pattern>/contacts</url-pattern>
+  <url-pattern>/contacts/*</url-pattern>
 </servlet-mapping>
 
 </web-app>

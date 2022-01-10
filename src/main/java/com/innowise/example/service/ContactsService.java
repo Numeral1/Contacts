@@ -1,35 +1,60 @@
 package com.innowise.example.service;
 
-import com.innowise.example.dto.request.ContactDtoRequest;
-import com.innowise.example.dto.response.ContactDtoResponse;
-import com.innowise.example.entity.ContactsEntity;
+import com.innowise.example.dto.request.ContactRequest;
+import com.innowise.example.dto.request.PhoneItem;
+import com.innowise.example.dto.response.ContactShortResponse;
+import com.innowise.example.dto.response.ContactResponse;
+import com.innowise.example.entity.ContactEntity;
+import com.innowise.example.entity.PhoneEntity;
 import com.innowise.example.repository.ContactsRepository;
+import com.innowise.example.repository.PhoneRepository;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContactsService {
-    ContactsRepository contactsRepository = new ContactsRepository();
-    List<ContactDtoResponse> contactDtoResponseList = new ArrayList<>();
 
-    public List<ContactDtoResponse> showAll() {
-        for (ContactsEntity element : contactsRepository.showAllContacts()) {
-            contactDtoResponseList.add(ContactDtoResponse.toModel(element));
+    private ContactsRepository contactsRepository = new ContactsRepository();
+    private PhoneRepository phoneRepository = new PhoneRepository();
+
+
+
+    public List<ContactShortResponse> showAll() {
+        List<ContactShortResponse> contactShortResponseList = new LinkedList<>();
+        for (ContactEntity element : contactsRepository.showAllContacts()) {
+            contactShortResponseList.add(ContactShortResponse.fromEntity(element));
         }
-        return contactDtoResponseList;
+        return contactShortResponseList;
     }
 
-    public void addContact(ContactDtoRequest request) {
-        ContactsEntity contact = ContactDtoRequest.toEntity(request);
-        contactsRepository.saveContact(contact);
+    public long addContact(ContactRequest request) {
+        ContactEntity contact = ContactRequest.toEntity(request);
+        Long savedId = contactsRepository.saveContact(contact);
+        List<PhoneItem> phoneList = request.getPhoneList();
+        phoneList.stream()
+                .map(phoneItem -> PhoneItem.toPhoneEntity(phoneItem, savedId))
+                .forEach(phoneEntity -> phoneRepository.savePhone(phoneEntity));
+
+        return savedId;
     }
 
-    public ContactDtoResponse findContactById(long id) {
-        ContactDtoResponse contactDto = new ContactDtoResponse();
-        contactDto.setId(contactsRepository.findById(id).getId());
-        contactDto.setName(contactsRepository.findById(id).getName());
-        contactDto.setSurname(contactsRepository.findById(id).getSurname());
-        contactDto.setPatronymic(contactsRepository.findById(id).getPatronymic());
+    public ContactResponse findContactById(long id) {
+        ContactEntity contact = contactsRepository.findById(id);
+        ContactResponse contactDto = ContactResponse.fromEntity(contact);
+        List<PhoneItem> phoneItems = new LinkedList<>();
+        PhoneItem item= PhoneItem.fromPhoneEntity(phoneRepository.getPhoneByContactId(id));
+        phoneItems.add(item);
+        contactDto.setPhoneItemList(phoneItems);
+
         return contactDto;
+    }
+
+    public void UpdateEntity(ContactRequest updateContact){
+        ContactEntity entity = ContactRequest.toEntity(updateContact);
+        contactsRepository.UpdateContact(entity);
+    }
+    public void deleteById(Long id){
+        contactsRepository.deleteContact(id);
     }
 }

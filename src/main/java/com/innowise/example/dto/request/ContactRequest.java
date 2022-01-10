@@ -1,7 +1,7 @@
 package com.innowise.example.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.innowise.example.entity.ContactsEntity;
+import com.innowise.example.entity.ContactEntity;
 import com.innowise.example.entity.Gender;
 import com.innowise.example.entity.MaritalStatus;
 
@@ -9,7 +9,8 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
-public class ContactDtoRequest {
+public class ContactRequest {
+    private Long id;
     private String name;
     private String surname;
     private String patronymic;
@@ -17,7 +18,7 @@ public class ContactDtoRequest {
     private Gender gender;
     private String citizenship;
     @JsonProperty("maritalStatus")
-    private MaritalStatus martialStatus;
+    private MaritalStatus maritalStatus;
     private String website;
     private String email;
     private String currentPlaceOfWork;
@@ -31,30 +32,38 @@ public class ContactDtoRequest {
     private Instant CreateTime;
     private Instant UpdateTime;
     private List<AttachmentDtoRequest> attachmentDtoRequestList;
-    private List<PhoneDtoRequest> phoneDtoRequestList;
+    private List<PhoneItem> phoneList;
 
-    public static ContactsEntity toEntity(ContactDtoRequest contactDtoRequest) {
-        ContactsEntity entity = new ContactsEntity();
-        entity.setName(contactDtoRequest.getName());
-        entity.setSurname(contactDtoRequest.getSurname());
-        entity.setPatronymic(contactDtoRequest.getPatronymic());
-        entity.setBirthday(contactDtoRequest.getBirthdate());
-        entity.setGender(contactDtoRequest.getGender());
-        entity.setCitizenship(contactDtoRequest.getCitizenship());
-        entity.setMartialStatus(contactDtoRequest.getMartialStatus());
-        entity.setWebsite(contactDtoRequest.getWebsite());
-        entity.setEmail(contactDtoRequest.getEmail());
-        entity.setCurrentPlaceOfWork(contactDtoRequest.getCurrentPlaceOfWork());
-        entity.setCountry(contactDtoRequest.getCountry());
-        entity.setCity(contactDtoRequest.getCity());
-        entity.setStreet(contactDtoRequest.getStreet());
-        entity.setHouse(contactDtoRequest.getHouse());
-        entity.setApartment(contactDtoRequest.getApartment());
-        entity.setPostcode(contactDtoRequest.getPostcode());
-        entity.setPhoto(contactDtoRequest.getPhoto());
-        entity.setCreateTime(Instant.now());
-        entity.setUpdateTime(Instant.now());
+    public static ContactEntity toEntity(ContactRequest contactRequest) {
+        ContactEntity entity = new ContactEntity();
+        entity.setId(contactRequest.getId());
+        entity.setName(contactRequest.getName());
+        entity.setSurname(contactRequest.getSurname());
+        entity.setPatronymic(contactRequest.getPatronymic());
+        entity.setBirthday(contactRequest.getBirthdate());
+        entity.setGender(contactRequest.getGender());
+        entity.setCitizenship(contactRequest.getCitizenship());
+        entity.setMartialStatus(contactRequest.getMaritalStatus());
+        entity.setWebsite(contactRequest.getWebsite());
+        entity.setEmail(contactRequest.getEmail());
+        entity.setCurrentPlaceOfWork(contactRequest.getCurrentPlaceOfWork());
+        entity.setCountry(contactRequest.getCountry());
+        entity.setCity(contactRequest.getCity());
+        entity.setStreet(contactRequest.getStreet());
+        entity.setHouse(contactRequest.getHouse());
+        entity.setApartment(contactRequest.getApartment());
+        entity.setPostcode(contactRequest.getPostcode());
+        entity.setPhoto(contactRequest.getPhoto());
+
         return entity;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -105,12 +114,12 @@ public class ContactDtoRequest {
         this.citizenship = citizenship;
     }
 
-    public MaritalStatus getMartialStatus() {
-        return martialStatus;
+    public MaritalStatus getMaritalStatus() {
+        return maritalStatus;
     }
 
-    public void setMartialStatus(MaritalStatus martialStatus) {
-        this.martialStatus = martialStatus;
+    public void setMaritalStatus(MaritalStatus maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public String getWebsite() {
@@ -217,11 +226,11 @@ public class ContactDtoRequest {
         this.attachmentDtoRequestList = attachmentDtoRequestList;
     }
 
-    public List<PhoneDtoRequest> getPhoneDtoRequestList() {
-        return phoneDtoRequestList;
+    public List<PhoneItem> getPhoneList() {
+        return phoneList;
     }
 
-    public void setPhoneDtoRequestList(List<PhoneDtoRequest> phoneDtoRequestList) {
-        this.phoneDtoRequestList = phoneDtoRequestList;
+    public void setPhoneList(List<PhoneItem> phoneList) {
+        this.phoneList = phoneList;
     }
 }

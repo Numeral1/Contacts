@@ -13,6 +13,9 @@ public class PhoneEntity {
    private Instant updateTime;
    private Long contactId;
 
+    public PhoneEntity() {
+    }
+
     public PhoneEntity(Long id, String countryCode, String operatorCode, String number, TypeOfPhone type, String comment, Instant createTime, Instant updateTime, Long contactId) {
         this.id = id;
         this.countryCode = countryCode;

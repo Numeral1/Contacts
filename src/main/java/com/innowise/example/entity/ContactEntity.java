@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
-public class ContactsEntity {
+public class ContactEntity {
 
    private Long id;
    private String name;
@@ -27,9 +27,9 @@ public class ContactsEntity {
    private Instant CreateTime;
    private Instant UpdateTime;
 
-    public ContactsEntity(Long id, String name, String surname, String patronymic, Date birthday, Gender gender, String citizenship, MaritalStatus martialStatus, String website,
-                          String email, String currentPlaceOfWork, String country, String city, String street, String house, String apartment, String postcode, String photo,
-                          Instant createTime, Instant updateTime) {
+    public ContactEntity(Long id, String name, String surname, String patronymic, Date birthday, Gender gender, String citizenship, MaritalStatus martialStatus, String website,
+                         String email, String currentPlaceOfWork, String country, String city, String street, String house, String apartment, String postcode, String photo,
+                         Instant createTime, Instant updateTime) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -52,7 +52,7 @@ public class ContactsEntity {
         UpdateTime = updateTime;
     }
 
-    public ContactsEntity() {
+    public ContactEntity() {
     }
 
     public Long getId() {
@@ -217,7 +217,7 @@ public class ContactsEntity {
 
     @Override
     public String toString() {
-        return "ContactsEntity{" +
+        return "ContactEntity{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
@@ -244,13 +244,21 @@ public class ContactsEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ContactsEntity)) return false;
-        ContactsEntity that = (ContactsEntity) o;
+        if (!(o instanceof ContactEntity)) return false;
+        ContactEntity that = (ContactEntity) o;
         return getId().equals(that.getId()) && getName().equals(that.getName()) && getSurname().equals(that.getSurname()) && getPatronymic().equals(that.getPatronymic()) && getBirthday().equals(that.getBirthday()) && getGender() == that.getGender() && getCitizenship().equals(that.getCitizenship()) && getMartialStatus() == that.getMartialStatus() && getWebsite().equals(that.getWebsite()) && getEmail().equals(that.getEmail()) && getCurrentPlaceOfWork().equals(that.getCurrentPlaceOfWork()) && getCountry().equals(that.getCountry()) && getCity().equals(that.getCity()) && getStreet().equals(that.getStreet()) && getHouse().equals(that.getHouse()) && getApartment().equals(that.getApartment()) && getPostcode().equals(that.getPostcode()) && getPhoto().equals(that.getPhoto()) && getCreateTime().equals(that.getCreateTime()) && getUpdateTime().equals(that.getUpdateTime());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName(), getSurname(), getPatronymic(), getBirthday(), getGender(), getCitizenship(), getMartialStatus(), getWebsite(), getEmail(), getCurrentPlaceOfWork(), getCountry(), getCity(), getStreet(), getHouse(), getApartment(), getPostcode(), getPhoto(), getCreateTime(), getUpdateTime());
+    }
+
+    public String getFullName() {
+        return String.join(" ", name, patronymic, surname);
+    }
+
+    public String getFullAddress() {
+        return String.join(" ", country, city, street, house, apartment, postcode);
     }
 }
